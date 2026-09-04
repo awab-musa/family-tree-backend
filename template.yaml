@@ -1,0 +1,51 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: Family Tree Backend - FastAPI on Lambda + API Gateway (PostgreSQL/RDS)
+
+Globals:
+  Function:
+    Timeout: 15
+    MemorySize: 512
+    Runtime: python3.12
+
+Parameters:
+  DatabaseUrl:
+    Type: String
+    NoEcho: true
+  JwtSecretKey:
+    Type: String
+    NoEcho: true
+  S3BucketName:
+    Type: String
+
+Resources:
+  FamilyTreeApi:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: lambda_handler.handler
+      CodeUri: .
+      Environment:
+        Variables:
+          DATABASE_URL: !Ref DatabaseUrl
+          JWT_SECRET_KEY: !Ref JwtSecretKey
+          S3_BUCKET_NAME: !Ref S3BucketName
+          ENV: production
+      Events:
+        ApiRoot:
+          Type: Api
+          Properties:
+            Path: /{proxy+}
+            Method: ANY
+        ApiBase:
+          Type: Api
+          Properties:
+            Path: /
+            Method: ANY
+      Policies:
+        - S3CrudPolicy:
+            BucketName: !Ref S3BucketName
+
+Outputs:
+  ApiUrl:
+    Description: API Gateway endpoint URL
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/"
