@@ -13,7 +13,7 @@ class Settings(BaseSettings):
     API_V1_PREFIX: str = "/api/v1"
 
     # ---- Database (Amazon RDS - PostgreSQL) ----
-    DATABASE_URL: str  # e.g. postgresql+asyncpg://user:pass@host:5432/family_tree
+    DATABASE_URL: sqlite:  # e.g. postgresql+asyncpg://user:pass@host:5432/family_tree
     DB_POOL_SIZE: int = 5
     DB_MAX_OVERFLOW: int = 5
 

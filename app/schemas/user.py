@@ -9,7 +9,7 @@ class UserRead(BaseModel):
 
     id: uuid.UUID
     email: EmailStr
-    full_name: str
+    name: str
     role: str
     is_active: bool
     created_at: datetime
