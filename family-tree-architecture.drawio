@@ -1,0 +1,115 @@
+<mxfile host="app.diagrams.net" modified="2026-09-22T00:00:00.000Z" agent="Claude" version="24.0.0" type="device">
+  <diagram name="Family Tree - AWS Architecture" id="familytree-arch">
+    <mxGraphModel dx="1600" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1500" pageHeight="950" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- Title -->
+        <mxCell id="title" value="Family Tree Web App &#8212; AWS Architecture (Free Tier, EC2-based Backend)" style="text;html=1;fontSize=20;fontStyle=1;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="200" y="20" width="1100" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- User / Browser -->
+        <mxCell id="user" value="User&lt;br&gt;(Browser)" style="shape=actor;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="40" y="440" width="60" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- CloudFront -->
+        <mxCell id="cloudfront" value="Amazon CloudFront&lt;br&gt;(CDN + Free HTTPS)&lt;br&gt;routes /* to S3, /api/* to EC2" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="200" y="150" width="220" height="70" as="geometry" />
+        </mxCell>
+
+        <!-- S3 Frontend -->
+        <mxCell id="s3frontend" value="S3 Bucket&lt;br&gt;family-tree-frontend&lt;br&gt;(Static React/Vite Build)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="500" y="160" width="200" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- AWS Region Container -->
+        <mxCell id="regionBox" value="AWS Cloud &#8212; Region (e.g. us-east-1)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#232F3E;dashed=1;verticalAlign=top;align=left;fontSize=14;fontStyle=1;spacingLeft=10;spacingTop=6;" vertex="1" parent="1">
+          <mxGeometry x="200" y="350" width="1260" height="560" as="geometry" />
+        </mxCell>
+
+        <!-- VPC Container -->
+        <mxCell id="vpcBox" value="Default VPC" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#7B7B7B;dashed=1;verticalAlign=top;align=left;fontSize=13;fontStyle=1;spacingLeft=10;spacingTop=6;" vertex="1" parent="1">
+          <mxGeometry x="230" y="390" width="900" height="480" as="geometry" />
+        </mxCell>
+
+        <!-- ec2-sg Container -->
+        <mxCell id="ec2sgBox" value="Security Group: ec2-sg&lt;br&gt;Inbound: 22 (My IP), 80 (Anywhere)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;dashed=1;verticalAlign=top;align=left;fontSize=12;fontStyle=1;spacingLeft=10;spacingTop=6;" vertex="1" parent="1">
+          <mxGeometry x="260" y="440" width="380" height="400" as="geometry" />
+        </mxCell>
+
+        <!-- EC2 instance box -->
+        <mxCell id="ec2box" value="EC2 t2.micro &#8212; Ubuntu 22.04 LTS&lt;br&gt;(family-tree-backend)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;verticalAlign=top;align=left;fontSize=12;fontStyle=1;spacingLeft=10;spacingTop=6;" vertex="1" parent="1">
+          <mxGeometry x="280" y="480" width="340" height="330" as="geometry" />
+        </mxCell>
+
+        <mxCell id="nginx" value="Nginx&lt;br&gt;Reverse Proxy (:80)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6c8ebf;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="300" y="520" width="300" height="55" as="geometry" />
+        </mxCell>
+
+        <mxCell id="gunicorn" value="Gunicorn + Uvicorn Workers&lt;br&gt;(127.0.0.1:8000, localhost only)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6c8ebf;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="300" y="595" width="300" height="55" as="geometry" />
+        </mxCell>
+
+        <mxCell id="fastapi" value="FastAPI App (systemd service)&lt;br&gt;JWT Auth &#183; RBAC (Viewer/Admin)&lt;br&gt;Recursive CTE tree queries" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6c8ebf;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="300" y="670" width="300" height="75" as="geometry" />
+        </mxCell>
+
+        <!-- rds-sg Container -->
+        <mxCell id="rdssgBox" value="Security Group: rds-sg&lt;br&gt;Inbound: 5432 (from ec2-sg only)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;dashed=1;verticalAlign=top;align=left;fontSize=12;fontStyle=1;spacingLeft=10;spacingTop=6;" vertex="1" parent="1">
+          <mxGeometry x="700" y="440" width="380" height="200" as="geometry" />
+        </mxCell>
+
+        <mxCell id="rds" value="Amazon RDS&lt;br&gt;PostgreSQL (db.t3.micro, Free Tier)&lt;br&gt;DB: family_tree&lt;br&gt;Public Access: No" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="730" y="490" width="320" height="110" as="geometry" />
+        </mxCell>
+
+        <!-- S3 Media (outside VPC, still in region) -->
+        <mxCell id="s3media" value="S3 Bucket&lt;br&gt;family-tree-media&lt;br&gt;(Photos / Documents)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="1180" y="490" width="240" height="100" as="geometry" />
+        </mxCell>
+
+        <!-- Arrows -->
+        <mxCell id="e1" value="HTTPS" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=11;" edge="1" parent="1" source="user" target="cloudfront">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e2" value="/* (static assets)" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=11;" edge="1" parent="1" source="cloudfront" target="s3frontend">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e3" value="/api/* requests" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=11;" edge="1" parent="1" source="cloudfront" target="nginx">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e4" value="proxy_pass" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=11;" edge="1" parent="1" source="nginx" target="gunicorn">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e5" value="ASGI" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=11;" edge="1" parent="1" source="gunicorn" target="fastapi">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e6" value="asyncpg :5432&#10;(recursive CTE queries)" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=11;" edge="1" parent="1" source="fastapi" target="rds">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e7" value="boto3: generate&#10;presigned URL" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=11;" edge="1" parent="1" source="fastapi" target="s3media">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e8" value="Direct upload/download&#10;via Presigned URL" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=11;dashed=1;" edge="1" parent="1" source="user" target="s3media">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="80" y="870" />
+              <mxPoint x="1300" y="870" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
